@@ -1,9 +1,21 @@
+import { gql } from 'graphql-request';
 import Head from 'next/head'
 import Image from 'next/image'
-import products from '../products.json';
+
+import { useRouter } from 'next/router';
+import graphCmsClient from '../lib/graphCmsClient';
+
+//import productsLocal from '../products-local.json';
 import styles from '../styles/Home.module.css'
 
-export default function Home() {
+function Home() {
+
+  const data = useRouter();
+  let products = Object.values(data.components["/"].props.pageProps).flat(1);
+  //products = Object.values(products.components).flat(1);
+
+
+
   return (
     <div className={styles.container}>
       <Head>
@@ -20,6 +32,12 @@ export default function Home() {
           Snipcart Store
         </h1>
 
+        {/* <div>
+          <pre>
+            {console.log(Object.values(data.components["/"].props.pageProps).flat(1))}
+          </pre>
+        </div> */}
+
         <p className={styles.description}>
           <a className="snipcart-checkout snipcart-summary" href="#" style={{ textDecoration: "none" }}>
             <strong>Cart: </strong> <span className="snipcart-total-price">$0.00</span>
@@ -32,15 +50,15 @@ export default function Home() {
           {products.map(product => {
             return (
               <div key={product.id} className={styles.card}>
-                <h3>{product.title}</h3>
-                <img src={product.image} alt={`Preview of ${product.title}`} />
+                <h3>{product.name}</h3>
+                <img src={product["image"].url} alt={`Preview of ${product.name}`} />
                 <p>{product.description}</p>
                 <p>${product.price}</p>
                 <p>
                   <button className="snipcart-add-item"
                     data-item-id={product.id}
-                    data-item-image={product.image}
-                    data-item-name={product.title}
+                    data-item-image={product["image"].url}
+                    data-item-name={product.name}
                     data-item-url="/"
                     data-item-price={product.price}
                   >
@@ -70,3 +88,25 @@ export default function Home() {
     </div>
   )
 }
+
+export async function getStaticProps(context) {
+  const { products } = await graphCmsClient.request(gql`
+  {
+    products {
+      id
+      name
+      description
+      price
+      image {
+        url
+      }
+    }
+  }`
+  );
+
+  return {
+    props: { products },
+  }
+}
+
+export default Home;
