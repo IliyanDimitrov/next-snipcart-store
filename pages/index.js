@@ -17,10 +17,13 @@ export default function Home() {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
+          Snipcart Store
         </h1>
 
         <p className={styles.description}>
+          <a className="snipcart-checkout snipcart-summary" href="#" style={{ textDecoration: "none" }}>
+            <strong>Cart: </strong> <span className="snipcart-total-price">$0.00</span>
+          </a>
           Get started by editing{' '}
           <code className={styles.code}>pages/index.js</code>
         </p>
@@ -52,8 +55,7 @@ export default function Home() {
 
       <footer className={styles.footer}>
         <script async src="https://cdn.snipcart.com/themes/v3.0.21/default/snipcart.js" />
-        <div hidden id="snipcart" data-api-key="NzJiYWQxN2UtYzIyNi00NGM1LThkZTMtODU2ZWQyZDljYWEzNjM3NzA2ODQxMjU1NTUxNTQ5
-]" />
+        <div hidden id="snipcart" data-api-key="NzJiYWQxN2UtYzIyNi00NGM1LThkZTMtODU2ZWQyZDljYWEzNjM3NzA2ODQxMjU1NTUxNTQ5" />
         <a
           href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
           target="_blank"
